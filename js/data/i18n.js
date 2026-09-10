@@ -1,0 +1,207 @@
+/**
+ * MediAssist AI — Multilingual Localization System
+ * Accurate medical navigation translations for English, Hindi (हिंदी), and Telugu (తెలుగు).
+ */
+
+export const I18N = {
+  en: {
+    hospitalName: "MediAssist Multi-Specialty Hospital",
+    tagline: "Tell us how you're feeling, and we'll help you find the right medical care and appointment.",
+    welcomeHero: "Healthcare, made easier with AI.",
+    welcomeSub: "Describe your symptoms. Find the right doctor. Book your appointment.",
+    startSymptomCheck: "Start Symptom Check",
+    bookAppointment: "Book Appointment",
+    emergencyHelp: "Emergency Help (24/7)",
+    myAppointments: "My Appointments",
+    highContrast: "High Contrast",
+    textSize: "Text Size",
+    rolePatient: "Patient",
+    roleAdmin: "Admin",
+    roleDoctor: "Doctor Portal",
+    agentInspector: "AI Agent Inspector",
+    disclaimer: "MediAssist AI provides preliminary clinical navigation and appointment booking. It does not provide medical diagnoses or prescriptions. In case of emergency, call 911 / 108 / 112 immediately.",
+    
+    // Step Titles
+    stepBasic: "Basic Information",
+    stepSymptoms: "Symptoms",
+    stepQuestions: "Follow-up Questions",
+    stepRouting: "Medical Routing",
+    stepAppointment: "Appointment",
+    stepConfirmation: "Confirmation",
+
+    // Intake conversation
+    intakeGreeting: "Hi! I'm MediAssist AI 🏥. I'll ask you a few quick questions to understand what kind of medical care you may need. This isn't a medical diagnosis. Ready to begin?",
+    yesStart: "Yes, Start",
+    bookDirectly: "Book directly without triage",
+    askName: "What is your full name?",
+    askAgeGender: "Thank you, {name}. What is your age and gender?",
+    askContact: "What is the best phone number and email to send your appointment confirmation?",
+    askSymptoms: "Tell me what's bothering you today. You can describe your symptoms in your own words, speak via microphone, or tap common symptoms below.",
+    
+    // Emergency screen
+    emergencyTitle: "🚨 POSSIBLE MEDICAL EMERGENCY",
+    emergencyLead: "Some of the symptoms you've described may require immediate medical attention. MediAssist cannot evaluate emergency conditions safely.",
+    emergencyCallServices: "Call Emergency Services (911 / 108 / 112)",
+    emergencyContactHospital: "Call Hospital ER Hotline",
+    emergencyDirections: "Get Directions to ER (Ground Floor, 24/7)",
+
+    // Summary & Routing
+    symptomsIdentified: "Symptoms Identified",
+    durationLabel: "Duration",
+    severityLabel: "Severity",
+    recommendedDept: "Recommended Department",
+    findDoctorBtn: "Find & Match Doctor",
+    possibleCauses: "Possible causes may include (preliminary, non-diagnostic):",
+    preliminaryNotice: "This assessment is for healthcare navigation and does not replace professional medical diagnosis.",
+
+    // Booking
+    selectAppointment: "Select Appointment Slot",
+    confirmBookingTitle: "Confirm Your Appointment",
+    confirmBookingBtn: "Confirm & Book Slot",
+    bookingConfirmedTitle: "Appointment Successfully Booked 🎉",
+    appointmentId: "Appointment ID",
+    doctor: "Doctor",
+    department: "Department",
+    dateTime: "Date & Time",
+    hospitalLocation: "Hospital Location",
+    room: "Room",
+    addToCalendar: "Add to Calendar (.ics)",
+    viewAppointment: "View in Dashboard",
+    rescheduleBtn: "Reschedule",
+    cancelBtn: "Cancel Appointment",
+    getDirections: "Hospital Navigation / Directions",
+
+    // Natural commands
+    searchPlaceholder: "Ask or search... e.g., 'Skin doctor', 'Move my appointment to Friday', 'Cardiology'"
+  },
+
+  hi: {
+    hospitalName: "मेडीअसिस्ट मल्टी-स्पेशियलिटी अस्पताल",
+    tagline: "बताएं कि आप कैसा महसूस कर रहे हैं, और हम आपको सही चिकित्सा और अपॉइंटमेंट दिलाने में मदद करेंगे।",
+    welcomeHero: "स्वास्थ्य सेवा, एआई के साथ आसान।",
+    welcomeSub: "अपने लक्षण बताएं। सही डॉक्टर खोजें। अपना अपॉइंटमेंट बुक करें।",
+    startSymptomCheck: "लक्षण जांच शुरू करें",
+    bookAppointment: "अपॉइंटमेंट बुक करें",
+    emergencyHelp: "आपातकालीन सहायता (24/7)",
+    myAppointments: "मेरे अपॉइंटमेंट्स",
+    highContrast: "उच्च कंट्रास्ट",
+    textSize: "फॉन्ट आकार",
+    rolePatient: "मरीज़",
+    roleAdmin: "व्यवस्थापक",
+    roleDoctor: "डॉक्टर पोर्टल",
+    agentInspector: "एआई एजेंट निरीक्षक",
+    disclaimer: "मेडीअसिस्ट एआई प्रारंभिक स्वास्थ्य मार्गदर्शन और अपॉइंटमेंट बुकिंग प्रदान करता है। यह कोई चिकित्सीय निदान या नुस्खा नहीं देता है। आपात स्थिति में तुरंत 911 / 108 / 112 पर कॉल करें।",
+
+    stepBasic: "बुनियादी जानकारी",
+    stepSymptoms: "लक्षण",
+    stepQuestions: "अनुवर्ती प्रश्न",
+    stepRouting: "विभाग चयन",
+    stepAppointment: "अपॉइंटमेंट",
+    stepConfirmation: "पुष्टि",
+
+    intakeGreeting: "नमस्ते! मैं मेडीअसिस्ट एआई 🏥 हूँ। मैं यह समझने के लिए कुछ त्वरित प्रश्न पूछूँगा कि आपको किस प्रकार की देखभाल की आवश्यकता हो सकती है। क्या आप शुरू करने के लिए तैयार हैं?",
+    yesStart: "हाँ, शुरू करें",
+    bookDirectly: "सीधे अपॉइंटमेंट बुक करें",
+    askName: "आपका पूरा नाम क्या है?",
+    askAgeGender: "धन्यवाद, {name}। आपकी उम्र और लिंग क्या है?",
+    askContact: "अपॉइंटमेंट विवरण भेजने के लिए आपका फोन नंबर और ईमेल क्या है?",
+    askSymptoms: "आज आपको क्या परेशानी हो रही है? आप अपने शब्दों में लिख सकते हैं, माइक से बोल सकते हैं या नीचे दिए गए लक्षणों को चुन सकते हैं।",
+
+    emergencyTitle: "🚨 संभावित चिकित्सीय आपातकाल",
+    emergencyLead: "आपके द्वारा बताए गए कुछ लक्षणों के लिए तत्काल आपातकालीन चिकित्सा की आवश्यकता हो सकती है।",
+    emergencyCallServices: "आपातकालीन सेवा कॉल करें (108 / 112)",
+    emergencyContactHospital: "अस्पताल ईआर हॉटलाइन",
+    emergencyDirections: "आपातकालीन वार्ड का रास्ता (भू-तल, 24/7)",
+
+    symptomsIdentified: "पहचाने गए लक्षण",
+    durationLabel: "अवधि",
+    severityLabel: "गंभीरता",
+    recommendedDept: "अनुशंसित विभाग",
+    findDoctorBtn: "डॉक्टर खोजें और चुनें",
+    possibleCauses: "संभावित कारणों में शामिल हो सकते हैं (गैर-नैदानिक):",
+    preliminaryNotice: "यह मूल्यांकन स्वास्थ्य मार्गदर्शन के लिए है और पेशेवर डॉक्टर निदान की जगह नहीं लेता है।",
+
+    selectAppointment: "अपॉइंटमेंट समय चुनें",
+    confirmBookingTitle: "अपॉइंटमेंट की पुष्टि करें",
+    confirmBookingBtn: "पुष्टि करें और स्लॉट बुक करें",
+    bookingConfirmedTitle: "अपॉइंटमेंट सफलतापूर्वक बुक हो गया 🎉",
+    appointmentId: "अपॉइंटमेंट आईडी",
+    doctor: "डॉक्टर",
+    department: "विभाग",
+    dateTime: "दिनांक और समय",
+    hospitalLocation: "स्थान",
+    room: "कमरा",
+    addToCalendar: "कैलेंडर में जोड़ें (.ics)",
+    viewAppointment: "डैशबोर्ड में देखें",
+    rescheduleBtn: "पुनर्निर्धारित करें",
+    cancelBtn: "अपॉइंटमेंट रद्द करें",
+    getDirections: "अस्पताल का नक्शा",
+
+    searchPlaceholder: "पूछें या खोजें... जैसे 'त्वचा रोग विशेषज्ञ', 'मेरा अपॉइंटमेंट बदलें'"
+  },
+
+  te: {
+    hospitalName: "మెడిఅసిస్ట్ మల్టీ-స్పెషాలిటీ హాస్పిటల్",
+    tagline: "మీకు ఎలా అనిపిస్తుందో మాకు చెప్పండి, సరైన వైద్యం మరియు అపాయింట్‌మెంట్‌ను కనుగొనడంలో మేము మీకు సహాయం చేస్తాము.",
+    welcomeHero: "ఏఐ తో వైద్య సంరక్షణ మరింత సులభం.",
+    welcomeSub: "మీ లక్షణాలను వివరించండి. సరైన వైద్యుడిని ఎంచుకోండి. అపాయింట్‌మెంట్ బుక్ చేయండి.",
+    startSymptomCheck: "లక్షణాల తనిఖీ ప్రారంభించండి",
+    bookAppointment: "అపాయింట్‌మెంట్ బుక్ చేయండి",
+    emergencyHelp: "అత్యవసర సహాయం (24/7)",
+    myAppointments: "నా అపాయింట్‌మెంట్లు",
+    highContrast: "హై కాంట్రాస్ట్",
+    textSize: "అక్షర పరిమాణం",
+    rolePatient: "రోగి",
+    roleAdmin: "అడ్మిన్",
+    roleDoctor: "డాక్టర్ పోర్టల్",
+    agentInspector: "ఏఐ ఏజెంట్ ఇన్స్పెక్టర్",
+    disclaimer: "మెడిఅసిస్ట్ ఏఐ ప్రాథమిక ఆరోగ్య నావిగేషన్ మరియు అపాయింట్‌మెంట్ బుకింగ్‌ను అందిస్తుంది. ఇది వైద్య నిర్ధారణ లేదా మందులను సూచించదు. అత్యవసర పరిస్థితుల్లో వెంటనే 108 / 112 కు కాల్ చేయండి.",
+
+    stepBasic: "ప్రాథమిక సమాచారం",
+    stepSymptoms: "లక్షణాలు",
+    stepQuestions: "అనుబంధ ప్రశ్నలు",
+    stepRouting: "విభాగం ఎంపిక",
+    stepAppointment: "అపాయింట్‌మెంట్",
+    stepConfirmation: "నిర్ధారణ",
+
+    intakeGreeting: "నమస్కారం! నేను మెడిఅసిస్ట్ ఏఐ 🏥. మీకు ఎలాంటి వైద్యం అవసరమో అర్థం చేసుకోవడానికి కొన్ని ప్రశ్నలు అడుగుతాను. ఇది వైద్య నిర్ధారణ కాదు. ప్రారంభిద్దామా?",
+    yesStart: "అవును, ప్రారంభించండి",
+    bookDirectly: "నేరుగా బుక్ చేసుకోండి",
+    askName: "మీ పూర్తి పేరు ఏమిటి?",
+    askAgeGender: "ధన్యవాదాలు {name}. మీ వయస్సు మరియు లింగం ఏమిటి?",
+    askContact: "అపాయింట్‌మెంట్ సమాచారం పంపడానికి మీ ఫోన్ నంబర్ మరియు ఈమెయిల్ ఇవ్వండి.",
+    askSymptoms: "ఈ రోజు మీకు ఏ సమస్యగా ఉంది? మీ మాటల్లో వివరించవచ్చు, మైక్ ఉపయోగించి మాట్లాడవచ్చు లేదా కింద ఉన్న లక్షణాలను ఎంచుకోవచ్చు.",
+
+    emergencyTitle: "🚨 అత్యవసర వైద్య పరిస్థితి",
+    emergencyLead: "మీరు వివరించిన కొన్ని లక్షణాలకు తక్షణ వైద్య చికిత్స అవసరం కావచ్చు.",
+    emergencyCallServices: "అత్యవసర కాల్ (108 / 112)",
+    emergencyContactHospital: "హాస్పిటల్ ER హాట్‌లైన్",
+    emergencyDirections: "అత్యవసర విభాగానికి దారి (గ్రౌండ్ ఫ్లోర్, 24/7)",
+
+    symptomsIdentified: "గుర్తించిన లక్షణాలు",
+    durationLabel: "వ్యవధి",
+    severityLabel: "తీవ్రత",
+    recommendedDept: "సిఫార్సు చేయబడిన విభాగం",
+    findDoctorBtn: "డాక్టర్‌ను ఎంచుకోండి",
+    possibleCauses: "సాధ్యమయ్యే కారణాలు (ప్రాథమిక సమాచారం):",
+    preliminaryNotice: "ఈ అంచనా కేవలం ఆరోగ్య మార్గదర్శకత్వం కోసం మాత్రమే మరియు వైద్య నిర్ధారణ కాదు.",
+
+    selectAppointment: "అపాయింట్‌మెంట్ సమయాన్ని ఎంచుకోండి",
+    confirmBookingTitle: "అపాయింట్‌మెంట్ నిర్ధారించండి",
+    confirmBookingBtn: "స్లాట్ బుక్ చేయండి",
+    bookingConfirmedTitle: "అపాయింట్‌మెంట్ విజయవంతంగా బుక్ చేయబడింది 🎉",
+    appointmentId: "అపాయింట్‌మెంట్ ఐడీ",
+    doctor: "డాక్టర్",
+    department: "విభాగం",
+    dateTime: "తేదీ & సమయం",
+    hospitalLocation: "స్థలం",
+    room: "గది నం",
+    addToCalendar: "క్యాలెండర్‌కు జోడించండి (.ics)",
+    viewAppointment: "డ్యాష్‌బోర్డ్‌లో చూడండి",
+    rescheduleBtn: "సమయం మార్చండి",
+    cancelBtn: "రద్దు చేయండి",
+    getDirections: "హాస్పిటల్ మ్యాప్",
+
+    searchPlaceholder: "వెతకండి... ఉదా: 'చర్మ వైద్యుడు', 'కార్డియాలజీ'"
+  }
+};

@@ -1,0 +1,23 @@
+{
+  "name": "mediassist-ai",
+  "version": "1.0.0",
+  "description": "MediAssist AI - Advanced Automated Hospital Appointment & Symptom Triage Agent",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "healthcare",
+    "ai-agent",
+    "triage",
+    "hospital",
+    "appointments"
+  ],
+  "author": "MediAssist AI Team",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^6.2.0"
+  }
+}

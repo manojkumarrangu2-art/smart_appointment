@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediAssist AI — Advanced Automated Hospital Appointment & Symptom Triage Agent</title>
+  <meta name="description" content="Intelligent hospital appointment booking, symptom-based clinical triage, emergency red-flag detection, and certified doctor matching.">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/chat.css">
+  <link rel="stylesheet" href="/css/emergency.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-group" onclick="window.mediAssist.navigate('landing-screen')">
+        <div class="logo-icon">🏥</div>
+        <div class="logo-text">
+          <h1>MediAssist <span class="logo-badge">AI AGENT</span></h1>
+        </div>
+      </div>
+
+      <nav class="header-nav">
+        <div class="nav-link active" data-target="landing-screen" onclick="window.mediAssist.navigate('landing-screen')">
+          <span>🏠</span> <span data-i18n="navHome">Home</span>
+        </div>
+        <div class="nav-link" data-target="symptom-wizard-screen" onclick="window.mediAssist.startSymptomFlow()">
+          <span>🩺</span> <span data-i18n="startSymptomCheck">Symptom Checker</span>
+        </div>
+        <div class="nav-link" data-target="doctor-directory-screen" onclick="window.mediAssist.navigate('doctor-directory-screen')">
+          <span>👨⚕️</span> <span data-i18n="navDoctors">Doctors</span>
+        </div>
+        <div class="nav-link" data-target="departments-screen" onclick="window.mediAssist.navigate('departments-screen')">
+          <span>🏢</span> <span data-i18n="navDepts">Departments</span>
+        </div>
+        <div class="nav-link" data-target="patient-dashboard-screen" onclick="window.mediAssist.navigate('patient-dashboard-screen')">
+          <span>📋</span> <span data-i18n="myAppointments">My Appointments</span>
+        </div>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Language Selector -->
+        <select id="langSelect" class="form-select" style="width: auto; padding: 4px 8px; font-size: 0.85rem;" onchange="window.mediAssist.changeLanguage(this.value)">
+          <option value="en">English (EN)</option>
+          <option value="hi">हिंदी (Hindi)</option>
+          <option value="te">తెలుగు (Telugu)</option>
+        </select>
+
+        <!-- Accessibility Toggles -->
+        <button class="icon-btn" title="Toggle High Contrast" onclick="window.mediAssist.toggleContrast()">
+          👁️
+        </button>
+        <button class="icon-btn" title="Toggle Font Scaling" onclick="window.mediAssist.toggleFontScale()">
+          Aa
+        </button>
+
+        <!-- Role Selector Pill -->
+        <div class="role-badge">
+          <button class="role-btn active" data-role="patient" onclick="window.mediAssist.switchRole('patient')" data-i18n="rolePatient">Patient</button>
+          <button class="role-btn" data-role="admin" onclick="window.mediAssist.switchRole('admin')" data-i18n="roleAdmin">Admin</button>
+          <button class="role-btn" data-role="doctor" onclick="window.mediAssist.switchRole('doctor')" data-i18n="roleDoctor">Doctor</button>
+        </div>
+
+        <!-- Notification Bell -->
+        <button class="icon-btn" title="Notifications & Reminders" onclick="window.mediAssist.toggleNotificationDrawer()">
+          🔔
+          <span class="notif-badge-count" id="notifBadgeCount" style="display: none;">1</span>
+        </button>
+
+        <!-- Agent Architecture Inspector Button -->
+        <button class="btn btn-sm btn-primary" onclick="window.mediAssist.toggleAgentDrawer()" title="View 8 Autonomous AI Agents in Action">
+          ⚡ <span data-i18n="agentInspector">Agent Inspector</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Body -->
+  <main class="main-wrapper">
+
+    <!-- ==========================================================================
+         SCREEN 1: LANDING & WELCOME
+         ========================================================================== -->
+    <section id="landing-screen" class="view-section active">
+      <div style="text-align: center; max-width: 820px; margin: 2rem auto 3rem;">
+        <div class="badge badge-routine mb-2" style="font-size: 0.85rem; padding: 0.4rem 1rem;">
+          🏥 AI-Powered Hospital Receptionist & Triage
+        </div>
+        <h1 style="font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; line-height: 1.15;">
+          Healthcare, made easier with <span style="background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Autonomous AI.</span>
+        </h1>
+        <p style="font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.5;" data-i18n="welcomeSub">
+          Describe your symptoms. Find the right doctor. Book your appointment.
+        </p>
+
+        <!-- Primary Action Buttons -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 2.5rem;">
+          <button class="btn btn-primary btn-lg" onclick="window.mediAssist.startSymptomFlow()">
+            🩺 <span data-i18n="startSymptomCheck">Start Symptom Check</span>
+          </button>
+          <button class="btn btn-secondary btn-lg" onclick="window.mediAssist.navigate('doctor-directory-screen')">
+            📅 <span data-i18n="bookAppointment">Book Appointment</span>
+          </button>
+          <button class="btn btn-outline-danger btn-lg" onclick="window.mediAssist.triggerEmergencyDemo()">
+            🚨 <span data-i18n="emergencyHelp">Emergency Help (24/7)</span>
+          </button>
+          <button class="btn btn-secondary btn-lg" onclick="window.mediAssist.navigate('patient-dashboard-screen')">
+            📋 <span data-i18n="myAppointments">My Appointments</span>
+          </button>
+        </div>
+
+        <!-- Quick Natural Language Search Bar -->
+        <div style="max-width: 650px; margin: 0 auto; position: relative;">
+          <input
+            type="text"
+            id="landingQueryInput"
+            class="form-input"
+            style="border-radius: var(--radius-full); padding: 0.9rem 4rem 0.9rem 1.5rem; box-shadow: var(--shadow-md); font-size: 1rem;"
+            placeholder="Ask or search... e.g. 'I have fever and cough for 3 days', 'Skin doctor', 'Move my appointment'"
+            data-i18n-placeholder="searchPlaceholder"
+            onkeydown="if (event.key === 'Enter') window.mediAssist.handleNaturalSearch(this.value)"
+          />
+          <button class="send-btn" style="position: absolute; right: 6px; top: 6px; width: 38px; height: 38px;" onclick="window.mediAssist.handleNaturalSearch(document.getElementById('landingQueryInput').value)">
+            🔍
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Hospital Stats Grid -->
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <div class="stat-icon-wrap stat-icon-primary">👨⚕️</div>
+          <div>
+            <div class="stat-value" id="landingStatDocs">25+</div>
+            <div class="stat-label">Certified Specialists</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap stat-icon-success">🏢</div>
+          <div class="stat-value" id="landingStatDepts">15</div>
+          <div class="stat-label">Medical Departments</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap stat-icon-warning">📅</div>
+          <div>
+            <div class="stat-value" id="landingStatAppts">150+</div>
+            <div class="stat-label">Appointments Handled</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap stat-icon-danger">🚑</div>
+          <div>
+            <div class="stat-value">24/7</div>
+            <div class="stat-label">Level-1 Trauma ER</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Department Previews -->
+      <div style="margin-top: 2rem;">
+        <div class="flex-between mb-2">
+          <h2>Featured Hospital Departments</h2>
+          <button class="btn btn-sm btn-secondary" onclick="window.mediAssist.navigate('departments-screen')">View All 15 Departments →</button>
+        </div>
+        <div class="dept-grid" id="landingDeptsGrid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCREEN 2: SYMPTOM CHECKER & CONVERSATIONAL WIZARD
+         ========================================================================== -->
+    <section id="symptom-wizard-screen" class="view-section">
+      <!-- Stepper Progress Tracker -->
+      <div class="progress-stepper">
+        <div class="stepper-line"><div class="stepper-line-fill" id="stepperLineFill"></div></div>
+        <div class="step-item active" id="stepIndicator1">
+          <div class="step-circle">1</div>
+          <div class="step-title" data-i18n="stepBasic">Basic Info</div>
+        </div>
+        <div class="step-item" id="stepIndicator2">
+          <div class="step-circle">2</div>
+          <div class="step-title" data-i18n="stepSymptoms">Symptoms</div>
+        </div>
+        <div class="step-item" id="stepIndicator3">
+          <div class="step-circle">3</div>
+          <div class="step-title" data-i18n="stepQuestions">Follow-ups</div>
+        </div>
+        <div class="step-item" id="stepIndicator4">
+          <div class="step-circle">4</div>
+          <div class="step-title" data-i18n="stepRouting">Routing</div>
+        </div>
+        <div class="step-item" id="stepIndicator5">
+          <div class="step-circle">5</div>
+          <div class="step-title" data-i18n="stepAppointment">Appointment</div>
+        </div>
+      </div>
+
+      <!-- Split Layout: Chat on Left, Progress on Right -->
+      <div class="triage-container">
+        <!-- Conversational Chat Panel -->
+        <div class="chat-panel">
+          <div class="chat-header">
+            <div class="chat-assistant-info">
+              <div class="chat-avatar">🩺</div>
+              <div>
+                <div class="chat-title">MediAssist Clinical Navigator</div>
+                <div class="chat-subtitle">Autonomous Triage & Reception Agent</div>
+              </div>
+            </div>
+            <div class="flex-row gap-1">
+              <button class="icon-btn" id="ttsToggleBtn" title="Toggle Text-to-Speech Voice" onclick="window.mediAssist.toggleSpeechVoice()">
+                🔊
+              </button>
+              <button class="icon-btn" title="Restart Check" onclick="window.mediAssist.resetTriageChat()">
+                🔄
+              </button>
+            </div>
+          </div>
+
+          <!-- Chat Messages History -->
+          <div class="chat-history" id="chatHistoryContainer">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Common Symptom Chips Bar -->
+          <div class="common-symptoms-bar" id="commonSymptomsBar" style="display: none;">
+            <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-tertiary); margin-right: 0.5rem;">Tap to add:</span>
+            <button class="symptom-tag-btn" onclick="window.mediAssist.addSymptomChip('Fever')">🌡️ Fever</button>
+            <button class="symptom-tag-btn" onclick="window.mediAssist.addSymptomChip('Cough')">🗣️ Cough</button>
+            <button class="symptom-tag-btn" onclick="window.mediAssist.addSymptomChip('Sore throat')">🧣 Sore Throat</button>
+            <button class="symptom-tag-btn" onclick="window.mediAssist.addSymptomChip('Headache')">🤕 Headache</button>
+            <button class="symptom-tag-btn" onclick="window.mediAssist.addSymptomChip('Stomach pain')">🤢 Stomach Pain</button>
+            <button class="symptom-tag-btn" onclick="window.mediAssist.addSymptomChip('Knee pain')">🦵 Knee Pain</button>
+            <button class="symptom-tag-btn" onclick="window.mediAssist.addSymptomChip('Skin rash')">🧴 Skin Rash</button>
+          </div>
+
+          <!-- Chat Input Bar -->
+          <div class="chat-input-bar">
+            <button class="voice-btn" id="voiceMicBtn" title="Speak via Microphone (Web Speech)" onclick="window.mediAssist.toggleVoiceInput()">
+              🎙️
+            </button>
+            <input
+              type="text"
+              id="chatInputField"
+              class="chat-input-field"
+              placeholder="Type your message or symptoms here..."
+              onkeydown="if (event.key === 'Enter') window.mediAssist.submitChatMessage()"
+            />
+            <button class="send-btn" title="Send" onclick="window.mediAssist.submitChatMessage()">
+              ➤
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Side: Patient Progress Sidebar -->
+        <aside class="patient-progress-sidebar">
+          <div class="progress-header">
+            <h4>Patient Profile</h4>
+            <span class="badge badge-routine" id="progressStatusBadge">Intake Stage</span>
+          </div>
+
+          <div class="triage-profile-card">
+            <div class="profile-field">
+              <span style="color: var(--text-tertiary);">Name:</span>
+              <strong id="sideProfileName">—</strong>
+            </div>
+            <div class="profile-field">
+              <span style="color: var(--text-tertiary);">Age / Sex:</span>
+              <strong id="sideProfileAgeSex">—</strong>
+            </div>
+            <div class="profile-field">
+              <span style="color: var(--text-tertiary);">Contact:</span>
+              <strong id="sideProfileContact">—</strong>
+            </div>
+            <div class="profile-field">
+              <span style="color: var(--text-tertiary);">Language:</span>
+              <strong id="sideProfileLang">English</strong>
+            </div>
+          </div>
+
+          <h4 style="font-size: 0.9rem;">Triage Checklist</h4>
+          <div class="progress-checklist">
+            <div class="progress-check-item" id="chkBasicInfo">
+              <div class="check-icon current">1</div>
+              <div>
+                <div style="font-weight: 600;">Basic Information</div>
+                <div style="font-size: 0.75rem; color: var(--text-tertiary);">Demographics & contact</div>
+              </div>
+            </div>
+            <div class="progress-check-item" id="chkSymptoms">
+              <div class="check-icon pending">2</div>
+              <div>
+                <div style="font-weight: 600;">Symptom Description</div>
+                <div style="font-size: 0.75rem; color: var(--text-tertiary);">Natural voice or text</div>
+              </div>
+            </div>
+            <div class="progress-check-item" id="chkFollowup">
+              <div class="check-icon pending">3</div>
+              <div>
+                <div style="font-weight: 600;">Clinical Follow-ups</div>
+                <div style="font-size: 0.75rem; color: var(--text-tertiary);">Adaptive clinical queries</div>
+              </div>
+            </div>
+            <div class="progress-check-item" id="chkRedFlags">
+              <div class="check-icon pending">4</div>
+              <div>
+                <div style="font-weight: 600;">Red-Flag Safety Check</div>
+                <div style="font-size: 0.75rem; color: var(--text-tertiary);">Emergency evaluation</div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCREEN 3: SYMPTOM SUMMARY & MEDICAL ROUTING
+         ========================================================================== -->
+    <section id="symptom-summary-screen" class="view-section">
+      <div style="max-width: 800px; margin: 1.5rem auto;">
+        <div class="card" style="border-top: 4px solid var(--primary);">
+          <div class="flex-between mb-2">
+            <h2>Clinical Assessment Summary</h2>
+            <span class="badge badge-routine" style="font-size: 0.85rem;">Preliminary Navigation</span>
+          </div>
+
+          <div style="background: var(--bg-subtle); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+            <h4 style="margin-bottom: 0.5rem;" data-i18n="symptomsIdentified">Symptoms Identified</h4>
+            <div id="summarySymptomsList" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+              <!-- Pills inserted via JS -->
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.9rem;">
+              <div><strong data-i18n="durationLabel">Duration:</strong> <span id="summaryDuration">3 days</span></div>
+              <div><strong data-i18n="severityLabel">Severity:</strong> <span id="summarySeverity">Moderate</span></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <h3 style="color: var(--primary); margin-bottom: 0.35rem;" data-i18n="recommendedDept">Recommended Department:</h3>
+            <div style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;" id="summaryDept">
+              General Medicine
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5;" id="summaryRationale">
+              Your symptoms are commonly evaluated and treated by a General Medicine physician.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 1.5rem; border-top: 1px solid var(--border-light); padding-top: 1.25rem;">
+            <h4 style="margin-bottom: 0.5rem;" data-i18n="possibleCauses">Possible causes may include (preliminary, non-diagnostic):</h4>
+            <ul id="summaryConditions" style="padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.6;">
+              <!-- Injected via JS -->
+            </ul>
+          </div>
+
+          <!-- Non-diagnostic Safety Disclaimer -->
+          <div style="background: #f8fafc; border-left: 4px solid #0284c7; padding: 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+            ⚠️ <strong data-i18n="preliminaryNotice">This assessment is for healthcare navigation and does not replace professional medical diagnosis.</strong> A qualified hospital physician will examine you thoroughly.
+          </div>
+
+          <div class="flex-between">
+            <button class="btn btn-secondary" onclick="window.mediAssist.navigate('symptom-wizard-screen')">
+              ← Edit Symptoms
+            </button>
+            <button class="btn btn-primary btn-lg" onclick="window.mediAssist.showDoctorMatching()">
+              👨⚕️ <span data-i18n="findDoctorBtn">Find & Match Doctor</span> →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCREEN 4: DOCTOR RECOMMENDATIONS
+         ========================================================================== -->
+    <section id="doctor-matching-screen" class="view-section">
+      <div style="margin-bottom: 1.5rem;">
+        <h2>Recommended Certified Specialists</h2>
+        <p style="color: var(--text-secondary);">
+          Doctors matched based on your recommended department, language preference, and live schedule availability.
+        </p>
+      </div>
+
+      <div class="doctor-grid" id="matchedDoctorsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCREEN 5: APPOINTMENT CALENDAR & SLOT SELECTOR
+         ========================================================================== -->
+    <section id="appointment-calendar-screen" class="view-section">
+      <div style="max-width: 850px; margin: 0 auto;">
+        <button class="btn btn-sm btn-secondary mb-2" onclick="window.mediAssist.navigate('doctor-matching-screen')">
+          ← Back to Doctor List
+        </button>
+
+        <div class="card mb-2" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h2 id="calDocName">Dr. Anil Kumar</h2>
+            <div id="calDocMeta" style="color: var(--text-secondary); font-size: 0.9rem;">General Medicine • Main Hospital, Room 204</div>
+          </div>
+          <span class="badge badge-success" style="font-size: 0.85rem;">🟢 Accepting Patients Today</span>
+        </div>
+
+        <!-- Date Picker Controls -->
+        <div class="card mb-2">
+          <div class="flex-between flex-wrap gap-1" style="border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; margin-bottom: 1.25rem;">
+            <div class="flex-row gap-1">
+              <button class="btn btn-secondary btn-sm" onclick="window.mediAssist.changeDateOffset(-1)">◀ Previous Day</button>
+              <button class="btn btn-secondary btn-sm" onclick="window.mediAssist.changeDateOffset(1)">Next Day ▶</button>
+            </div>
+
+            <div style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary);" id="calDateDisplay">
+              Wednesday, September 9, 2026
+            </div>
+
+            <input type="date" id="calDateInput" class="form-input" style="width: auto; padding: 4px 8px;" onchange="window.mediAssist.handleCustomDate(this.value)" />
+          </div>
+
+          <h4 style="margin-bottom: 1rem;" data-i18n="selectAppointment">Select Appointment Slot:</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem;" id="calSlotsGrid">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCREEN 6: BOOKING CONFIRMATION SCREEN
+         ========================================================================== -->
+    <section id="booking-confirmation-screen" class="view-section">
+      <div style="max-width: 720px; margin: 1.5rem auto; text-align: center;">
+        <div class="card" style="border-top: 5px solid var(--success); padding: 2.5rem 2rem;">
+          <div style="font-size: 3.5rem; margin-bottom: 0.75rem;">🎉</div>
+          <h1 style="color: var(--success); font-size: 2rem; margin-bottom: 0.5rem;" data-i18n="bookingConfirmedTitle">
+            Appointment Successfully Booked
+          </h1>
+          <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+            A confirmation SMS and preparation instructions email have been dispatched.
+          </p>
+
+          <div style="background: var(--bg-main); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2rem; text-align: left; display: grid; grid-template-columns: 1fr 160px; gap: 1.5rem; align-items: center;">
+            <div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.95rem;">
+              <div><strong data-i18n="appointmentId">Appointment ID:</strong> <span class="badge badge-routine" style="font-size: 0.9rem;" id="confirmApptId">MA-20260909-00125</span></div>
+              <div><strong data-i18n="doctor">Doctor:</strong> <span id="confirmDoctorName">Dr. Anil Kumar</span></div>
+              <div><strong data-i18n="department">Department:</strong> <span id="confirmDept">General Medicine</span></div>
+              <div><strong data-i18n="dateTime">Date & Time:</strong> <span id="confirmDate">2026-09-09</span> at <strong id="confirmTime">04:00 PM</strong></div>
+              <div><strong data-i18n="hospitalLocation">Location:</strong> <span id="confirmRoom">Main Hospital, Room 204</span></div>
+              <div><strong>Patient Name:</strong> <span id="confirmPatientName">John Doe</span></div>
+            </div>
+
+            <!-- Scannable Hospital Check-in QR -->
+            <div class="qr-container">
+              <canvas id="confirmQrCanvas" class="qr-canvas" width="140" height="140"></canvas>
+              <span style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 4px;">Scan at Front Desk</span>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+            <button class="btn btn-primary" onclick="window.mediAssist.downloadCurrentCalendar()">
+              📅 <span data-i18n="addToCalendar">Add to Calendar (.ics)</span>
+            </button>
+            <button class="btn btn-secondary" onclick="window.mediAssist.navigate('patient-dashboard-screen')">
+              📋 <span data-i18n="viewAppointment">View in Dashboard</span>
+            </button>
+            <button class="btn btn-secondary" onclick="window.mediAssist.openDirectionsModal()">
+              🗺️ <span data-i18n="getDirections">Get Directions</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCREEN 7: EMERGENCY RED-FLAG TAKEOVER SCREEN
+         ========================================================================== -->
+    <section id="emergency-screen" class="view-section">
+      <div class="emergency-overlay-screen">
+        <div class="emergency-icon-wrap">🚨</div>
+        <h2 class="emergency-title" data-i18n="emergencyTitle">POSSIBLE MEDICAL EMERGENCY</h2>
+        <p class="emergency-lead" data-i18n="emergencyLead">
+          Some of the symptoms you've described may require urgent medical attention. Normal appointment booking has been halted for your safety.
+        </p>
+
+        <div class="emergency-disclaimer-box">
+          <strong style="color: var(--emergency);">Emergency Indicators Detected:</strong>
+          <ul class="emergency-flags-list" id="emergencyFlagsList">
+            <li>Severe chest pain or acute breathing difficulty</li>
+          </ul>
+        </div>
+
+        <div class="emergency-actions-grid">
+          <a href="tel:911" class="emergency-btn-call" data-i18n="emergencyCallServices">
+            📞 Call Emergency Services (911 / 108 / 112)
+          </a>
+          <a href="tel:8005559111" class="emergency-btn-hospital" data-i18n="emergencyContactHospital">
+            🏥 Call Hospital ER Hotline
+          </a>
+        </div>
+
+        <div class="er-info-card">
+          <div class="er-info-text">
+            <h4>MediAssist Hospital Emergency Department</h4>
+            <p>Building 4, Ground Floor, Ambulance Bay Entry (Open 24/7/365)</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="window.mediAssist.openDirectionsModal()">
+            View Map & Directions
+          </button>
+        </div>
+
+        <div style="margin-top: 1.5rem;">
+          <button class="btn btn-secondary btn-sm" onclick="window.mediAssist.navigate('landing-screen')">
+            ← Return to Home
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCREEN 8: PATIENT DASHBOARD
+         ========================================================================== -->
+    <section id="patient-dashboard-screen" class="view-section">
+      <div class="flex-between mb-2">
+        <div>
+          <h2 id="dashboardGreeting">Welcome, John Doe</h2>
+          <p style="color: var(--text-secondary);">Manage your appointments, past medical consults, and clinical assessments.</p>
+        </div>
+        <button class="btn btn-primary" onclick="window.mediAssist.startSymptomFlow()">
+          + New Symptom Check
+        </button>
+      </div>
+
+      <!-- Featured Next Appointment Card -->
+      <div class="featured-appt-card" id="dashNextApptCard">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Quick Actions Bar -->
+      <div class="dashboard-grid">
+        <div class="card card-interactive" onclick="window.mediAssist.startSymptomFlow()">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🩺</div>
+          <h4>Check Symptoms</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">Describe your symptoms to our autonomous triage agent.</p>
+        </div>
+        <div class="card card-interactive" onclick="window.mediAssist.navigate('doctor-directory-screen')">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">👨⚕️</div>
+          <h4>Find Doctor</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">Search 25+ verified specialists by department and language.</p>
+        </div>
+        <div class="card card-interactive" onclick="window.mediAssist.navigate('departments-screen')">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🏢</div>
+          <h4>Hospital Departments</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">Explore 15 specialized wings and clinical facilities.</p>
+        </div>
+      </div>
+
+      <!-- Appointments History Table -->
+      <div class="data-table-container">
+        <div class="table-header-bar">
+          <h3>Your Appointments History</h3>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Doctor</th>
+              <th>Department</th>
+              <th>Date & Time</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dashHistoryTableBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCREEN 9: DOCTOR DIRECTORY & SEARCH
+         ========================================================================== -->
+    <section id="doctor-directory-screen" class="view-section">
+      <div style="margin-bottom: 1.5rem;">
+        <h2>Hospital Doctor Directory</h2>
+        <p style="color: var(--text-secondary);">Search certified physicians across all hospital departments.</p>
+      </div>
+
+      <div class="card mb-2" style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+        <input
+          type="text"
+          id="dirSearchInput"
+          class="form-input"
+          style="flex: 1; min-width: 220px;"
+          placeholder="Search by doctor name or specialty..."
+          oninput="window.mediAssist.renderDoctorDirectory()"
+        />
+
+        <select id="dirSpecialtyFilter" class="form-select" style="width: auto; min-width: 180px;" onchange="window.mediAssist.renderDoctorDirectory()">
+          <option value="all">All Specialties</option>
+          <option value="General Medicine">General Medicine</option>
+          <option value="Cardiology">Cardiology</option>
+          <option value="Dermatology">Dermatology</option>
+          <option value="Neurology">Neurology</option>
+          <option value="Orthopedics">Orthopedics</option>
+          <option value="Pediatrics">Pediatrics</option>
+          <option value="Gynecology & Obstetrics">Gynecology</option>
+          <option value="ENT (Ear, Nose & Throat)">ENT</option>
+          <option value="Ophthalmology">Ophthalmology</option>
+          <option value="Gastroenterology">Gastroenterology</option>
+          <option value="Pulmonology & Chest Medicine">Pulmonology</option>
+          <option value="Dental Care & Maxillofacial">Dental</option>
+        </select>
+
+        <select id="dirLanguageFilter" class="form-select" style="width: auto;" onchange="window.mediAssist.renderDoctorDirectory()">
+          <option value="all">All Languages</option>
+          <option value="English">English</option>
+          <option value="Telugu">Telugu</option>
+          <option value="Hindi">Hindi</option>
+        </select>
+      </div>
+
+      <div class="doctor-grid" id="directoryDoctorsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCREEN 10: HOSPITAL DEPARTMENTS
+         ========================================================================== -->
+    <section id="departments-screen" class="view-section">
+      <div style="margin-bottom: 1.5rem;">
+        <h2>Hospital Departments Directory</h2>
+        <p style="color: var(--text-secondary);">Comprehensive 15-department network with real-time specialist staffing.</p>
+      </div>
+
+      <div class="dept-grid" id="departmentsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCREEN 11: HOSPITAL ADMIN DASHBOARD
+         ========================================================================== -->
+    <section id="admin-dashboard-screen" class="view-section">
+      <div class="flex-between mb-2">
+        <div>
+          <h2>Hospital Administrator Console</h2>
+          <p style="color: var(--text-secondary);">Real-time clinical throughput, doctor availability, and agent audit trail.</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="window.mediAssist.resetHospitalDB()">
+          🔄 Reset Demo Data
+        </button>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <div class="stat-icon-wrap stat-icon-primary">📅</div>
+          <div>
+            <div class="stat-value" id="adminTodayAppts">1</div>
+            <div class="stat-label">Today's Bookings</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap stat-icon-success">👨⚕️</div>
+          <div>
+            <div class="stat-value" id="adminActiveDocs">12</div>
+            <div class="stat-label">Active Doctors</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap stat-icon-warning">✅</div>
+          <div>
+            <div class="stat-value" id="adminTotalBooked">1</div>
+            <div class="stat-label">Total Confirmed</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap stat-icon-danger">❌</div>
+          <div>
+            <div class="stat-value" id="adminCancelled">0</div>
+            <div class="stat-label">Cancellations</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctor Roster Table -->
+      <div class="data-table-container">
+        <div class="table-header-bar">
+          <h3>Doctor Roster & Availability Management</h3>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Doctor Name</th>
+              <th>Department</th>
+              <th>Room</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="adminDoctorRosterTable">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Real-time Agent Audit Logs -->
+      <div class="card">
+        <h3 style="margin-bottom: 1rem;">System Audit Trail (Agent Actions & Slot Locks)</h3>
+        <div id="adminAuditLogs" style="max-height: 300px; overflow-y: auto;">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SCREEN 12: DOCTOR CLINICAL PORTAL
+         ========================================================================== -->
+    <section id="doctor-portal-screen" class="view-section">
+      <div class="card mb-2 flex-between flex-wrap gap-1">
+        <div>
+          <h2 id="docPortalName">Doctor Portal — Patient Queue</h2>
+          <div style="font-size: 0.9rem; color: var(--text-secondary);">Manage today's consultations and clinical notes.</div>
+        </div>
+        <div class="flex-row gap-1">
+          <label style="font-size: 0.85rem; font-weight: 600;">Switch Doctor:</label>
+          <select id="doctorPortalSelect" class="form-select" style="width: auto;" onchange="window.mediAssist.changePortalDoctor(this.value)">
+            <!-- Options populated via JS -->
+          </select>
+          <span id="docPortalStatus" class="badge badge-success">Active</span>
+        </div>
+      </div>
+
+      <div class="data-table-container">
+        <div class="table-header-bar">
+          <h3>Today's Scheduled Patients</h3>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Patient Name</th>
+              <th>Symptom Summary</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="docPortalQueueTable">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Pre-booking Confirmation Review Modal -->
+  <div id="bookingConfirmModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 data-i18n="confirmBookingTitle">Confirm Your Appointment</h3>
+        <button class="modal-close" onclick="window.mediAssist.closeConfirmModal()">✕</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.95rem; margin-bottom: 1.5rem;">
+        <div class="profile-field"><span>Patient:</span> <strong id="modalPatientName">John Doe</strong></div>
+        <div class="profile-field"><span>Doctor:</span> <strong id="modalDoctorName">Dr. Anil Kumar</strong></div>
+        <div class="profile-field"><span>Department:</span> <strong id="modalDept">General Medicine</strong></div>
+        <div class="profile-field"><span>Date & Time:</span> <strong id="modalDateTime">September 9 at 4:00 PM</strong></div>
+        <div class="profile-field"><span>Location:</span> <strong id="modalLocation">Main Hospital, Room 204</strong></div>
+        <div class="profile-field"><span>Consultation Fee:</span> <strong id="modalFee">$50</strong></div>
+      </div>
+      <div style="background: var(--bg-subtle); padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+        🔒 This slot is temporarily locked for 5 minutes. No other patient can book this time.
+      </div>
+      <div class="flex-between">
+        <button class="btn btn-secondary" onclick="window.mediAssist.closeConfirmModal()">Change Time</button>
+        <button class="btn btn-primary" onclick="window.mediAssist.finalizeBooking()">Confirm Booking ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reschedule Modal -->
+  <div id="rescheduleModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Reschedule Appointment</h3>
+        <button class="modal-close" onclick="window.mediAssist.closeRescheduleModal()">✕</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Select New Date:</label>
+        <input type="date" id="rescheduleDateInput" class="form-input" onchange="window.mediAssist.renderRescheduleSlots()" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Available Times:</label>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;" id="rescheduleSlotsGrid">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+      <div class="flex-between mt-2">
+        <button class="btn btn-secondary" onclick="window.mediAssist.closeRescheduleModal()">Cancel</button>
+        <button class="btn btn-primary" id="confirmRescheduleBtn" onclick="window.mediAssist.executeReschedule()">Confirm New Slot</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cancel Modal -->
+  <div id="cancelModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Cancel Appointment</h3>
+        <button class="modal-close" onclick="window.mediAssist.closeCancelModal()">✕</button>
+      </div>
+      <p id="cancelModalPrompt" style="color: var(--text-secondary); margin-bottom: 1rem;">
+        Are you sure you want to cancel this appointment?
+      </p>
+      <div class="form-group">
+        <label class="form-label">Reason for cancellation (optional):</label>
+        <select id="cancelReasonSelect" class="form-select">
+          <option value="Schedule Conflict">Schedule Conflict</option>
+          <option value="Symptoms Resolved">Symptoms Resolved</option>
+          <option value="Visited Another Clinic">Visited Another Clinic</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="flex-between mt-2">
+        <button class="btn btn-secondary" onclick="window.mediAssist.closeCancelModal()">Keep Appointment</button>
+        <button class="btn btn-danger" onclick="window.mediAssist.executeCancel()">Yes, Cancel Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Directions Modal -->
+  <div id="directionsModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Hospital Location & Navigation</h3>
+        <button class="modal-close" onclick="document.getElementById('directionsModal').classList.remove('active')">✕</button>
+      </div>
+      <div style="background: #e0f2fe; padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; font-size: 0.9rem;">
+        📍 <strong>MediAssist Multi-Specialty Hospital</strong><br>
+        Building 4, Healthcare Boulevard, Metro Medical District
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem; color: var(--text-secondary);">
+        <div>🚗 <strong>Parking:</strong> Underground Visitor Parking (P1 & P2). Free 2-hour validation.</div>
+        <div>🚑 <strong>Emergency Wing:</strong> Ground floor, East gate with dedicated ambulance drop-off bay.</div>
+        <div>♿ <strong>Accessibility:</strong> Wheelchairs and electric assist carts available at Entrance A & C.</div>
+      </div>
+      <button class="btn btn-primary w-full mt-2" onclick="document.getElementById('directionsModal').classList.remove('active')">
+        Close Map
+      </button>
+    </div>
+  </div>
+
+  <!-- Notification Center Drawer -->
+  <div id="notifDrawer" class="modal-overlay">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>Notification Center</h3>
+        <button class="modal-close" onclick="document.getElementById('notifDrawer').classList.remove('active')">✕</button>
+      </div>
+      <div id="notifHistoryList" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 400px; overflow-y: auto;">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Live 8-Agent Architecture Drawer -->
+  <div id="agentDrawer" class="agent-drawer">
+    <div class="agent-drawer-header">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.25rem;">⚡</span>
+        <div>
+          <div style="font-weight: 700; font-size: 1rem;">8-Agent Architecture Visualizer</div>
+          <div style="font-size: 0.75rem; color: #94a3b8;">Real-time Telemetry & Guardrail Inspection</div>
+        </div>
+      </div>
+      <button class="modal-close" style="color: white;" onclick="window.mediAssist.toggleAgentDrawer()">✕</button>
+    </div>
+    <div class="agent-drawer-body" id="agentDrawerBody">
+      <!-- Injected via AgentInspectorUI -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <div class="footer-disclaimer">
+        <p><strong>Clinical Disclaimer:</strong> MediAssist AI is an automated hospital patient-navigation and appointment booking agent. It provides preliminary symptom triage categorization and routing to hospital departments. It does not provide medical diagnoses, treatment recommendations, or prescriptions. For life-threatening symptoms, dial emergency services immediately.</p>
+      </div>
+      <div class="footer-links">
+        <span>© 2026 MediAssist AI</span>
+        <span>•</span>
+        <span>Privacy & HIPAA Compliant</span>
+        <span>•</span>
+        <span>24/7 ER Hotline: (800) 555-9111</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Bootstrap -->
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
